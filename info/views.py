@@ -205,11 +205,11 @@ def t_report(request, assign_id):
 @login_required()
 def timetable(request, class_id):
     asst = AssignTime.objects.filter(assign__class_id=class_id)
-    matrix = [['' for i in range(12)] for j in range(6)]
+    matrix = [['' for i in range(9)] for j in range(6)]
 
     for i, d in enumerate(DAYS_OF_WEEK):
         t = 0
-        for j in range(12):
+        for j in range(9):
             if j == 0:
                 matrix[i][0] = d[0]
                 continue
@@ -229,10 +229,10 @@ def timetable(request, class_id):
 @login_required()
 def t_timetable(request, teacher_id):
     asst = AssignTime.objects.filter(assign__teacher_id=teacher_id)
-    class_matrix = [[True for i in range(12)] for j in range(6)]
+    class_matrix = [[True for i in range(9)] for j in range(6)]
     for i, d in enumerate(DAYS_OF_WEEK):
         t = 0
-        for j in range(12):
+        for j in range(9):
             if j == 0:
                 class_matrix[i][0] = d[0]
                 continue
@@ -278,12 +278,12 @@ def marks_list(request, stud_id):
         except StudentCourse.DoesNotExist:
             sc = StudentCourse(student=stud, course=ass.course)
             sc.save()
-            sc.marks_set.create(type='I', name='Internal test 1')
-            sc.marks_set.create(type='I', name='Internal test 2')
-            sc.marks_set.create(type='I', name='Internal test 3')
-            sc.marks_set.create(type='E', name='Event 1')
-            sc.marks_set.create(type='E', name='Event 2')
-            sc.marks_set.create(type='S', name='Semester End Exam')
+            sc.marks_set.create(type='I', name='CIE 1')
+            sc.marks_set.create(type='I', name='CIE 2')
+            sc.marks_set.create(type='I', name='CIE 3')
+            sc.marks_set.create(type='E', name='Lab internal')
+            sc.marks_set.create(type='E', name='Lab external')
+            sc.marks_set.create(type='S', name='SEE theory')
         sc_list.append(sc)
 
     return render(request, 'info/marks_list.html', {'sc_list': sc_list})

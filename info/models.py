@@ -12,15 +12,12 @@ sex_choice = (
 )
 
 time_slots = (
-    ('7:30 - 8:30', '7:30 - 8:30'),
-    ('8:30 - 9:30', '8:30 - 9:30'),
-    ('9:30 - 10:30', '9:30 - 10:30'),
-    ('11:00 - 11:50', '11:00 - 11:50'),
-    ('11:50 - 12:40', '11:50 - 12:40'),
-    ('12:40 - 1:30', '12:40 - 1:30'),
-    ('2:30 - 3:30', '2:30 - 3:30'),
-    ('3:30 - 4:30', '3:30 - 4:30'),
-    ('4:30 - 5:30', '4:30 - 5:30'),
+    ('9:00 - 10:00', '9:00 - 10:00'),
+    ('10:00 - 11:00', '10:00 - 11:00'),
+    ('11:30 - 12:30', '11:30 - 12:30'),
+    ('12:30 - 1:30', '12:30 - 1:30'),
+    ('2:15 - 3:15', '2:15 - 3:15'),
+    ('3:15 - 4:15', '3:15 - 4:15'),
 )
 
 DAYS_OF_WEEK = (
@@ -33,11 +30,11 @@ DAYS_OF_WEEK = (
 )
 
 test_name = (
-    ('Internal test 1', 'Internal test 1'),
-    ('Internal test 2', 'Internal test 2'),
-    ('Internal test 3', 'Internal test 3'),
-    ('Event 1', 'Event 1'),
-    ('Event 2', 'Event 2'),
+    ('CIE 1', 'CIE 1'),
+    ('CIE 2', 'CIE 2'),
+    ('CIE 3', 'CIE 3'),
+    ('Lab Internal', 'Lab Internal'),
+    ('Lab External', 'Lab External'),
     ('Semester End Exam', 'Semester End Exam'),
 )
 
@@ -130,7 +127,7 @@ class Assign(models.Model):
 
 class AssignTime(models.Model):
     assign = models.ForeignKey(Assign, on_delete=models.CASCADE)
-    period = models.CharField(max_length=50, choices=time_slots, default='11:00 - 11:50')
+    period = models.CharField(max_length=50, choices=time_slots, default='11:30 - 12:30')
     day = models.CharField(max_length=15, choices=DAYS_OF_WEEK)
 
 
@@ -144,7 +141,7 @@ class Attendance(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     attendanceclass = models.ForeignKey(AttendanceClass, on_delete=models.CASCADE, default=1)
-    date = models.DateField(default='2018-10-23')
+    date = models.DateField(default='2021-2-10')
     status = models.BooleanField(default='True')
 
     def __str__(self):
@@ -226,7 +223,7 @@ class StudentCourse(models.Model):
 
 class Marks(models.Model):
     studentcourse = models.ForeignKey(StudentCourse, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50, choices=test_name, default='Internal test 1')
+    name = models.CharField(max_length=50, choices=test_name, default='CIE 1')
     marks1 = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100)])
 
     class Meta:
@@ -241,7 +238,7 @@ class Marks(models.Model):
 
 class MarksClass(models.Model):
     assign = models.ForeignKey(Assign, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50, choices=test_name, default='Internal test 1')
+    name = models.CharField(max_length=50, choices=test_name, default='CIE 1')
     status = models.BooleanField(default='False')
 
     class Meta:
@@ -294,11 +291,11 @@ def create_marks(sender, instance, **kwargs):
                 except StudentCourse.DoesNotExist:
                     sc = StudentCourse(student=instance, course=ass.course)
                     sc.save()
-                    sc.marks_set.create(name='Internal test 1')
-                    sc.marks_set.create(name='Internal test 2')
-                    sc.marks_set.create(name='Internal test 3')
-                    sc.marks_set.create(name='Event 1')
-                    sc.marks_set.create(name='Event 2')
+                    sc.marks_set.create(name='CIE 1')
+                    sc.marks_set.create(name='CIE 2')
+                    sc.marks_set.create(name='CIE 3')
+                    sc.marks_set.create(name='Lab Internal')
+                    sc.marks_set.create(name='Lab External')
                     sc.marks_set.create(name='Semester End Exam')
         elif hasattr(instance, 'course'):
             stud_list = instance.class_id.student_set.all()
@@ -309,11 +306,11 @@ def create_marks(sender, instance, **kwargs):
                 except StudentCourse.DoesNotExist:
                     sc = StudentCourse(student=s, course=cr)
                     sc.save()
-                    sc.marks_set.create(name='Internal test 1')
-                    sc.marks_set.create(name='Internal test 2')
-                    sc.marks_set.create(name='Internal test 3')
-                    sc.marks_set.create(name='Event 1')
-                    sc.marks_set.create(name='Event 2')
+                    sc.marks_set.create(name='CIE 1')
+                    sc.marks_set.create(name='CIE 2')
+                    sc.marks_set.create(name='CIE 3')
+                    sc.marks_set.create(name='Lab Internal')
+                    sc.marks_set.create(name='Lab External')
                     sc.marks_set.create(name='Semester End Exam')
 
 
